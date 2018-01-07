@@ -1,0 +1,10 @@
+1º - Execute o datasetCreator
+2º - Execute o trainner
+3º - Execute o detector
+4º - Seja feliz!
+
+
+1º - Run the datasetCreator
+2º - Run the trainner
+3º - Run the detector
+4º - Be happy!
