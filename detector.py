@@ -3,18 +3,18 @@ import sqlite3
 import numpy as np
 
 
-faceDetect=cv2.CascadeClassifier('haarcascade_frontalface_default.xml');
+faceDetect=cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml");
 cam=cv2.VideoCapture(0);
 rec=cv2.face.LBPHFaceRecognizer_create();
 rec.read("recognizer\\trainnerData.yml")
-id=0
+tempo=0
 font=cv2.FONT_HERSHEY_COMPLEX_SMALL
 fontScale = 1.5
-fontColor = (255,255,255)
+fontColor = (230,230,250)
 
 def getProfile(id):
     conn=sqlite3.connect("FaceBase.db")
-    cmd="SELECT * FROM Pessoas WHERE ID="+str(id)
+    cmd="SELECT * FROM Pessoas WHERE IMG="+str(tempo)
     cursor=conn.execute(cmd)
     profile=None
     for row in cursor:
@@ -28,9 +28,9 @@ while (True):
     gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     faces=faceDetect.detectMultiScale(gray,1.3,5);
     for(x,y,w,h)in faces:
-        cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,0),2)
-        id,conf=rec.predict(gray[y:y+h,x:x+w])
-        profile=getProfile(id)
+        cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),2)
+        tempo,conf=rec.predict(gray[y:y+h,x:x+w])
+        profile=getProfile(tempo)
         if(profile!=None):
             # Para adicionar mais campos basta copiar a linha a baixo e alterar o profile[1] para o numero da coluna desejada
             # To add more fields just copy the line down and change the profile[1] to the number of the desired column
