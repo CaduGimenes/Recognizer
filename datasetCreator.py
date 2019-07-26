@@ -5,18 +5,19 @@ from datetime import datetime
 
 faceDetect=cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml");
 cam=cv2.VideoCapture(0);
-conn=sqlite3.connect("FaceBase.db")
+conn=sqlite3.connect("Faces.db")
 
 def insertOrUpdate(Tempo,Name):
-    cmd="SELECT * FROM Pessoas WHERE IMG="+str(Tempo)
+    cmd="SELECT * FROM tb_faces WHERE cd_img="+str(Tempo)
     cursor=conn.execute(cmd)
     isRecordExist=0
+    Name.lower()
     for row in cursor:
         isRecordExist=1
     if(isRecordExist==1):
-        cmd="UPDATE Pessoas SET NOME=' "+str(Name)+" ' WHERE NOME="+str(Name)
+        cmd="UPDATE tb_faces SET nm_client=' "+str(Name)+" ' WHERE nm_client="+str(Name)
     else:
-        cmd="INSERT INTO Pessoas(IMG,NOME) Values("+str(Tempo)+",' "+str(Name)+" ' )"
+        cmd="INSERT INTO tb_faces(cd_img,nm_client) Values("+str(Tempo)+",' "+str(Name)+" ' )"
     conn.execute(cmd)
     conn.commit()
     conn.close()
@@ -38,7 +39,6 @@ while (True):
         cv2.imwrite("dataSet/User."+str(tempo)+"."+str(sampleNum)+".jpg",gray[y:y+h,x:x+w])
         cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),2)
         cv2.waitKey(100);
-    cv2.imshow("Detecao de Faces",img);      
     cv2.waitKey(1);
     if(sampleNum>20):
         break
